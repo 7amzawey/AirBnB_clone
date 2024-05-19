@@ -56,3 +56,23 @@ class TestFileStorage(unittest.TestCase):
         self.storage._FileStorage__objects = {}
         self.assertEqual(len(self.storage._FileStorage__objects), 0)
         self.storage.reload()
+        #loaded_model = self.storage._FileStorage__objects[f"BaseModel.{self.model.id}"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
