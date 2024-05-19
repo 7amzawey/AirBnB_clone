@@ -17,7 +17,8 @@ class FileStorage:
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
-        key = obj.__class__.__name__ + "." + obj.id
+        if (obj.__class__.__name__ != "User"):
+            key = obj.__class__.__name__ + "." + obj.id
         self.__objects[key] = obj
 
     def save(self):
@@ -33,7 +34,13 @@ class FileStorage:
             with open(self.__file_path, 'r', encoding="utf-8") as f:
                 objs = json.load(f)
                 from models.base_model import BaseModel
+                from models.user import User
                 for k, v in objs.items():
-                    self.__objects[k] = BaseModel(**v)
+                    if k.startswith("BaseModel."):
+                        self.__objects[k] = BaseModel(**v)
+
+                    else:
+                        self.__objects[k] = User(**v)
+
         except FileNotFoundError:
             pass

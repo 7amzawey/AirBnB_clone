@@ -3,6 +3,7 @@
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,11 +14,18 @@ class HBNBCommand(cmd.Cmd):
         """creates a new Instance of BaseModel"""
         if not args:
             print("** class name missing **")
-        elif (args != "BaseModel"):
+            return
+
+        if (args != "BaseModel") and (args != "User"):
             print("** class doesn't exist **")
-        else:
+            return
+
+        if args == "BaseModel":
             new_model = BaseModel()
-            print(new_model.id)
+        elif args == "User":
+            new_model = User()
+
+        print(new_model.id)
 
     def do_show(self, args):
         """prints the string representation of an instance based on the class
@@ -82,11 +90,72 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """prints all string representation of all instances based or not on
         class name."""
-        if arg != "BaseModel":
+        if arg and arg != "BaseModel":
             print("** class doesn't exist **")
+            return
 
-        elif not arg or arg == "BaseModel":
-            storage.__str__()
+        objects = storage.all()
+        instances = []
+
+        if not arg:
+            """print all instances"""
+            for obj in objects.values():
+                instances.append(str(obj))
+        else:
+            for key, obj in objects.items():
+                if key.startswith("BaseModel."):
+                    instances.append(str(obj))
+        print(instances)
+
+    def do_update(self, args):
+        """updates an isntance based on the class name and id by adding or
+        updating attribute (save the changes into the json file"""
+        if not args:
+            print("** class name missing **")
+            return
+
+        arg_list = args.split()
+        if len(arg_list) < 1:
+            print("** class name missing **")
+            return
+
+        cls_name = arg_list[0]
+        if len(arg_list) < 2:
+            print("** instance id missing **")
+            return
+
+        cls_id = arg_list[1]
+        key = "{}.{}".format(cls_name, cls_id)
+        instances = storage.all()
+
+        if key not in instances:
+            print("** no instance found **")
+            return
+
+        if len(arg_list) < 3:
+            print("** attribute name missing **")
+            return
+
+        attr_name = arg_list[2]
+
+        if len(arg_list) < 4:
+            print("** value missing **")
+            return
+
+        attr_value = arg_list[3]
+        if attr_value.isdigit():
+            attr_value = int(attr_value)
+        else:
+            try:
+                attr_value = float(attr_value)
+            except ValueError:
+                pass
+
+        instance = instances[key]
+        setattr(instance, attr_name, attr_value)
+        instance.save()
+
+        storage.save()
 
     def do_quit(self, args):
         """Quit command to exit the program"""
