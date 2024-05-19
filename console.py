@@ -120,6 +120,10 @@ class HBNBCommand(cmd.Cmd):
             return
 
         cls_name = arg_list[0]
+        if cls_name != "BaseModel":
+            print("** class doesn't exist **")
+            return
+
         if len(arg_list) < 2:
             print("** instance id missing **")
             return
@@ -153,7 +157,6 @@ class HBNBCommand(cmd.Cmd):
 
         instance = instances[key]
         setattr(instance, attr_name, attr_value)
-        instance.save()
 
         storage.save()
 
