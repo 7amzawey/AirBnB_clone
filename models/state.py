@@ -8,6 +8,9 @@ from models.base_model import BaseModel
 
 class State(BaseModel):
     """this class inherts from BaseModel"""
-    def __init__(self):
-        """this initializes the name attribute"""
-        self.name = name
+    
+    self.name = name
+    def __init__(self, *args, **kwargs):
+        """defines a new instance from the State Class"""
+        super().__init__(*args, **kwargs)
+        """ensures the parent class works properly"""

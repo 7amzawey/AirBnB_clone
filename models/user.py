@@ -12,6 +12,6 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
-    def __init__(*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """initilize an instance of the user classs"""
         super.__init__(*args, **kwargs)

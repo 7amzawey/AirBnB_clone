@@ -33,16 +33,8 @@ class FileStorage:
             with open(self.__file_path, 'r', encoding="utf-8") as f:
                 objs = json.load(f)
                 from models.base_model import BaseModel
-                from models.user import User
-                class_map = {
-                        "BaseModel": BaseModel,
-                        "User": User
-                        }
-
                 for k, v in objs.items():
-                    cls_name = v["__class__"]
-                    if cls_name in class_map:
-                        self.__objects[k] = class_map[cls_name](**v)
+                    self.__objects[k] = BaseModel(**v)
 
         except FileNotFoundError:
             pass
