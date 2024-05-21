@@ -53,12 +53,12 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload(self):
         """test the reload method"""
-        self.storage._FileStorage__objects = {}
-        self.assertEqual(len(self.storage._FileStorage__objects), 0)
-        self.storage.new(self.model)
-        self.storage.reload()
+        obj = self.model
+        self.storage.new(obj)
         self.storage.save()
-        key = f"BaseModel.{self.model.id}"
+        self.storage._FileStorage__objects = {}
+        self.storage.reload()
+        key = "BaseModel.{}".format(obj.id)
         self.assertIn(key, self.storage._FileStorage__objects)
         loaded_model = self.storage._FileStorage__objects[key]
         self.assertIsInstance(loaded_model, BaseModel)
