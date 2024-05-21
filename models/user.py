@@ -8,8 +8,10 @@ from models.base_model import BaseModel
 class User(BaseModel):
     """inherits from BaseModel"""
 
-    def __init__(self):
-        self.email = ""
-        self.password = ""
-        self.first_name = ""
-        self.last_name = ""
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""
+    def __init__(*args, **kwargs):
+        """initilize an instance of the user classs"""
+        super.__init__(*args, **kwargs)
