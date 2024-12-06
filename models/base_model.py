@@ -17,7 +17,7 @@ class BaseModel():
 
     def __str__(self):
         """Print class_name, id, self.__dict__."""
-        return f"[{self.__class__.__name__}>] (<{self.id}>) <{self.__dict__}>"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
         """Update the updated_at attribute."""
